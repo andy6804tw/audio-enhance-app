@@ -1,5 +1,4 @@
-streamlit
-gradio>=4.8.0
+gradio
 resemble_enhance
-fastapi==0.100.0
-uvicorn==0.23.1
+fastapi
+uvicorn
