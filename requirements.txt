@@ -1,2 +1,5 @@
 streamlit
-resemble-enhance==0.0.2.dev240104122303
+gradio>=4.8.0
+resemble_enhance
+fastapi==0.100.0
+uvicorn==0.23.1
