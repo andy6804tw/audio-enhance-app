@@ -43,28 +43,29 @@ def main():
 
     if st.button("Process"):
         if audio_file is not None:
-            # 將上傳的文件保存至本地臨時目錄
-            temp_file = f"temp_{audio_file.name}"
-            with open(temp_file, "wb") as f:
-                f.write(audio_file.read())
+            with st.spinner("Processing the audio... Please wait."):
+                # 將上傳的文件保存至本地臨時目錄
+                temp_file = f"temp_{audio_file.name}"
+                with open(temp_file, "wb") as f:
+                    f.write(audio_file.read())
 
-            # 處理音頻
-            denoised, enhanced = process_audio(temp_file, solver, nfe, tau, denoising)
+                # 處理音頻
+                denoised, enhanced = process_audio(temp_file, solver, nfe, tau, denoising)
 
-            if denoised and enhanced:
-                # 顯示和下載處理後的音頻
-                st.audio(denoised[1], format="audio/wav", start_time=0)
-                st.audio(enhanced[1], format="audio/wav", start_time=0)
+                if denoised and enhanced:
+                    # 顯示和下載處理後的音頻
+                    st.audio(denoised[1], format="audio/wav", start_time=0, sample_rate=denoised[0])
+                    st.audio(enhanced[1], format="audio/wav", start_time=0, sample_rate=enhanced[0])
 
-                # 下載處理後的音頻
-                denoised_bytes = io.BytesIO()
-                enhanced_bytes = io.BytesIO()
+                    # 下載處理後的音頻
+                    denoised_bytes = io.BytesIO()
+                    enhanced_bytes = io.BytesIO()
 
-                sf.write(denoised_bytes, denoised[1], denoised[0], format="WAV")
-                sf.write(enhanced_bytes, enhanced[1], enhanced[0], format="WAV")
+                    sf.write(denoised_bytes, denoised[1], denoised[0], format="WAV")
+                    sf.write(enhanced_bytes, enhanced[1], enhanced[0], format="WAV")
 
-                st.download_button("Download Denoised Audio", data=denoised_bytes, file_name="denoised_audio.wav")
-                st.download_button("Download Enhanced Audio", data=enhanced_bytes, file_name="enhanced_audio.wav")
+                    st.download_button("Download Denoised Audio", data=denoised_bytes, file_name="denoised_audio.wav")
+                    st.download_button("Download Enhanced Audio", data=enhanced_bytes, file_name="enhanced_audio.wav")
 
 if __name__ == "__main__":
     main()
