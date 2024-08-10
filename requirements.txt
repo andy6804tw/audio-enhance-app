@@ -1,4 +1,0 @@
-gradio
-resemble_enhance
-fastapi
-uvicorn
